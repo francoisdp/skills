@@ -103,13 +103,26 @@ owner, stop and tell the user rather than publishing someone else's work under t
    your standard or swap for your own. The verbatim source files are not your prose, so do not alter
    them to pass the scan.
 
-9. **Publish to GitHub.** Clone your skills repository into a temporary directory, copy the staged
-   `<skillname>/` folder into the clone as `<skillname>/`, commit with a clear message, push to the
-   default branch, then remove the temporary clone. Pushing is irreversible and outward facing, so
-   confirm the source is the user's own work before this step.
+9. **Build a populated example and ship a compiled output.** Every package must carry a worked
+   example of the skill's output that a reader can see, since an abstract template or a description
+   alone cannot be visualised. If the skill produces a compiled artifact, for example a PDF from a
+   Quarto, LaTeX, Marp or Markdown source, ship a populated example that compiles on its own, not
+   only a placeholder template, then actually run the compile and commit both the source and the
+   rendered file, for example the `.qmd` or `.md` together with the `.pdf`. A real build is required
+   here, because a static read misses compile-time failures, for example a style file ending with
+   `\endinput` that terminates the document when the build tool inlines it, or a tool that reads a
+   stray `.env` file from the working directory and stops. For a skill whose output is text rather
+   than a compiled document, render a short representative sample of that output to a PDF so the
+   reader can still see what a run produces. Fix any build failure in the bundled files before
+   publishing.
 
-10. **Report.** Give the staged path, the published folder URL inside the repository, a note of what
-    was genericised and the result of the writing-gate checks.
+10. **Publish to GitHub.** Clone your skills repository into a temporary directory, copy the staged
+    `<skillname>/` folder into the clone as `<skillname>/`, commit with a clear message, push to the
+    default branch, then remove the temporary clone. Pushing is irreversible and outward facing, so
+    confirm the source is the user's own work before this step.
+
+11. **Report.** Give the staged path, the published folder URL inside the repository, a note of what
+    was genericised, the result of the writing-gate checks and the result of the example build.
 
 ## README requirements
 
@@ -149,6 +162,9 @@ into a config the adopter replaces, so the method publishes without the brand as
   adopter lacks the templates, scripts, config or assets it reads from outside its folder. Bundle
   them into the package.
 - A README that falls below your writing standard. Run the writing gate before pushing.
+- Shipping a skill with no visible example of its output, so a reader cannot picture what it
+  produces. Ship a compilable example and a rendered PDF, then build it before publishing, since a
+  static read misses compile-time failures.
 - Leaving brand assets or a personal voice profile in the deployed default. Genericise, then keep
   the original under `examples/`.
 - Force-pushing or overwriting other skills in the repository. Add the new folder only, then push.
@@ -159,4 +175,4 @@ The README writing is real content production, so it may be delegated to a worke
 where one agent drafts the package and a second reviews it for correctness, style, completeness and
 depth before the push. A router skill such as `model-router` can manage that split, though the
 choice is yours. Whether delegated or written directly, the README must pass the writing gate in
-step 8 before the push in step 9.
+step 8 before the push in step 10.
