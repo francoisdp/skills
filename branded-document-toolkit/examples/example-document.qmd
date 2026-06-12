@@ -1,0 +1,112 @@
+---
+title: "Branded Document Toolkit"
+subtitle: "A Sample Report"
+date: "June 2026"
+format:
+  pdf:
+    documentclass: article
+    classoption:
+      - 11pt
+      - a4paper
+    pdf-engine: xelatex
+    geometry:
+      - margin=2.5cm
+      - top=3.5cm
+      - bottom=2.6cm
+      - headheight=2.0cm
+      - headsep=0.8cm
+    mainfont: "Helvetica Neue"
+    mainfontoptions:
+      - Ligatures=TeX
+    monofont: "Menlo"
+    monofontoptions:
+      - Scale=0.92
+    number-sections: true
+    toc: true
+    toc-depth: 2
+    colorlinks: true
+    keep-tex: false
+    include-in-header:
+      # Pull in the bundled brand. This path is relative to this .qmd, so it
+      # reaches the template folder one level up. Edit template/brand.sty to
+      # rebrand. The graphicspath then points at the assets folder beside it.
+      - file: ../template/brand.sty
+      - text: |
+          \graphicspath{{../template/assets/}{images/}}
+          \renewcommand{\brandFooterTagline}{Branded Document Toolkit}
+          \renewcommand{\brandCoverFooterName}{Acme Corporation}
+    include-before-body:
+      text: |
+        \brandcover
+          {Report}
+          {Branded Document Toolkit}
+          {A Sample Report for Acme Corporation}
+          {June 2026}
+    include-after-body:
+      text: |
+        \brandclose
+          {How can we help you build something useful?}
+          {www.example.com}
+---
+
+# Introduction
+
+This document is a worked example of the branded document toolkit. It compiles on its own, so you can render it once to see the cover page, the section headings, the callout boxes, the part divider and the closing page before you point the toolkit at your own material. No logo file sits in the assets folder, so the cover and the page header fall back to a text wordmark built from the organisation name, which means the example builds with nothing but the bundled template.
+
+The body below shows each of the five callout boxes so you can see how they render, since the boxes are the part of the brand a reader notices first.
+
+```{=latex}
+\begin{propbox}
+\textbf{Proposed approach.} A proposition box carries a recommendation or an engagement statement. The bold label renders in the accent colour, so the reader's eye lands on it first.
+\end{propbox}
+```
+
+# Concepts
+
+A concept box holds the supporting detail that a reader may want without losing the main thread of the section.
+
+```{=latex}
+\begin{conceptbox}
+\textbf{Definition.} A concept box explains a term or a capability in a light card, set apart from the body prose so the explanation reads as a reference rather than as part of the argument.
+\end{conceptbox}
+```
+
+```{=latex}
+\begin{insightbox}
+An insight box renders a conviction or a principle in italics with an accent rule down the left side, which suits a short statement you want the reader to remember.
+\end{insightbox}
+```
+
+```{=latex}
+\gmsectiondivider{Part II}{Risks and the Team}
+```
+
+# Risks
+
+```{=latex}
+\begin{riskbox}
+\textbf{Caution.} A risk box flags a constraint or a warning so it stands apart from the surrounding prose, which keeps the reader from missing it.
+\end{riskbox}
+```
+
+# The team
+
+```{=latex}
+\begin{teambox}
+\textbf{Lead engineer.} A team box describes a person and a role, with the accent rule marking it as a profile so a reader scanning the document can find who is involved.
+\end{teambox}
+```
+
+# Tables
+
+A short table renders with the document's fonts and spacing, so structured data sits cleanly inside a branded report.
+
+| Item | Value |
+|------|-------|
+| Mode | Write, wrap or restructure |
+| Output | A branded PDF |
+| Engine | Quarto with xelatex |
+
+# Next steps
+
+To turn this into your own document, edit `template/brand.sty` to set your accent colour and organisation name, drop your logo into `template/assets/`, then run the toolkit on your own material rather than editing this example by hand.

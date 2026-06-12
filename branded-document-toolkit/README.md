@@ -28,6 +28,8 @@ The compile step needs three things on the machine. The first is **Quarto**, the
 
 Trigger the skill with input and a phrase it recognises. Say "Turn these notes into a branded PDF" with raw material for WRITE mode, "Brand this document" with a path to a finished `.md`, `.qmd` or `.tex` file for WRAP mode, or "Polish this transcript into a branded PDF" with a raw transcript for RESTRUCTURE mode. The skill picks the mode from the input, asks once for the document title, then runs the full pipeline. It returns the path to the generated `.qmd`, the path to the compiled PDF and a note of any cover details it inferred so you can correct them. It asks before overwriting an existing output file.
 
+Before running the skill on your own material, render the bundled example to confirm your setup works. From the `examples/` folder run `quarto render example-document.qmd --to pdf`, which produces a PDF showing the cover, the five callout boxes, the part divider and the closing page. It builds with no logo present, since the cover falls back to a text wordmark, so a clean checkout compiles as is. One point on the working directory: Quarto reads a `.env.example` file from the directory you run it in and stops if the listed variables are missing, so run the render from inside the skill folder rather than from a project directory that has its own `.env.example`.
+
 ## Rationale
 
 The brand and the method are separated so the valuable part can be published without giving away the brand assets. The method is the three modes, the callout boxes, the cover and closing pages and the compile pipeline. The brand is one accent colour, an organisation name, a website and two logo files. By holding the brand in a config block in `template/brand.sty` and an `assets/` folder the adopter fills, the same skill serves any organisation, while the author's own logo files never need to ship in the package.
@@ -98,7 +100,9 @@ branded-document-toolkit/
 │   └── assets/
 │       └── README.md                 where to drop logo.png and logo-inverted.png
 └── examples/
-    └── config-grey-matter.md         a real brand config, filled in, no logo binaries
+    ├── config-grey-matter.md         a real brand config, filled in, no logo binaries
+    ├── example-document.qmd          a populated document that compiles on its own
+    └── example-document.pdf          the example rendered, so you see the output first
 ```
 
 ## Licence
