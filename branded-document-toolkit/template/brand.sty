@@ -1,0 +1,294 @@
+% =============================================================================
+%  brand.sty  --  Branded Document Toolkit LaTeX theme
+%  A generic, rebrandable LaTeX style for Quarto proposals, reports and studies.
+%  Compile with: xelatex  (fontspec + eso-pic required)
+%
+%  This file is loaded by branded-proposal-template.qmd through the Quarto
+%  include-in-header / file: mechanism. It defines the accent colour, the
+%  callout boxes, the section dividers, the cover and closing pages and the
+%  page header / footer. Edit only the CONFIG block below to rebrand.
+% =============================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{brand}[2026/06/13 v1.0 Branded Document Toolkit theme]
+
+% #############################################################################
+% #  CONFIG BLOCK  --  the only values an adopter changes to rebrand          #
+% #  Everything below the CONFIG block derives from these macros and the      #
+% #  accent colour. You should not need to touch the mechanics underneath.    #
+% #############################################################################
+
+% --- Accent colour -----------------------------------------------------------
+% The single brand colour. Used for headings, bold text, rules, box accents
+% and links. Default is a neutral professional medium blue. Set it as an HTML
+% hex value (six digits, no leading hash) or switch to an RGB triple below.
+\definecolor{brandAccent}{HTML}{1C6EA4}
+% RGB alternative (comment out the HTML line above and use this instead):
+% \definecolor{brandAccent}{RGB}{28,110,164}
+
+% --- Organisation identity ---------------------------------------------------
+% Your organisation name. Appears in the footer, the cover footer and the
+% closing page wordmark.
+\newcommand{\brandOrgName}{Your Organisation}
+
+% Short strapline under the wordmark on the closing page. One short line.
+\newcommand{\brandStrapline}{Your strapline here}
+
+% Your website. Appears in the footer and on the cover and closing pages.
+\newcommand{\brandWebsite}{www.example.com}
+
+% Intellectual-property notice printed small on the cover and closing pages.
+\newcommand{\brandIPNotice}{This document is the property of \brandOrgName.}
+
+% --- Logo filenames ----------------------------------------------------------
+% Place two image files in template/assets/ matching these names. Until both
+% files exist, the cover and closing pages fall back to a text wordmark and the
+% page header omits the logo, so the template still compiles with no assets.
+%   logo.png           a logo that reads on a light page header
+%   logo-inverted.png  a logo that reads on the dark cover and closing pages
+\newcommand{\brandLogo}{logo.png}
+\newcommand{\brandLogoInverted}{logo-inverted.png}
+
+% #############################################################################
+% #  END CONFIG BLOCK  --  mechanics below derive from the values above       #
+% #############################################################################
+
+% --- Core packages -----------------------------------------------------------
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{eso-pic}
+\RequirePackage{fancyhdr}
+
+% --- Mandatory titlesec fix --------------------------------------------------
+% Reset \paragraph and \subparagraph BEFORE loading titlesec. Pandoc / Quarto
+% wraps \paragraph with \mbox{}; titlesec's \ttl@extract then chokes on the
+% extra brace and the build fails with "Argument of \paragraph has an extra }".
+% Resetting both commands first avoids that fatal error. Do not remove this.
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}{-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}{-1em}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+\RequirePackage{titlesec}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{colortbl}
+
+% --- Derived palette ---------------------------------------------------------
+% Neutral structural colours, fixed across brands. Only brandAccent changes.
+\definecolor{brandDark}{HTML}{1F1F1F}    % cover and closing page background
+\definecolor{brandCream}{HTML}{FEFFEB}   % light text on the dark cover
+\definecolor{brandSilver}{HTML}{C1C1C1}  % muted text on dark pages
+\definecolor{brandLightBg}{HTML}{FAFAF7} % content page background
+\definecolor{brandLightCard}{HTML}{EFEFEA}
+\definecolor{brandInk}{HTML}{1F1F1F}     % body text on content pages
+\definecolor{brandLightBorder}{HTML}{D4D4CE}
+
+% --- Hyperref colours --------------------------------------------------------
+% Quarto loads hyperref itself, so override colours once the document begins.
+\AtBeginDocument{%
+  \hypersetup{linkcolor=brandAccent, urlcolor=brandAccent, citecolor=brandAccent}%
+}
+
+% --- Page background (content pages) -----------------------------------------
+\AddToShipoutPictureBG{%
+  \color{brandLightBg}%
+  \AtPageLowerLeft{\rule{\paperwidth}{\paperheight}}%
+}
+\color{brandInk}
+
+% --- Section headings --------------------------------------------------------
+\titleformat{\section}[block]
+  {\Large\bfseries\color{brandAccent}}{\thesection}{1em}{}
+  [{\vspace{-0.4em}{\color{brandLightBorder}\hrulefill}}]
+\titleformat{\subsection}
+  {\large\bfseries\color{brandAccent}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{brandInk!70}}{\thesubsubsection}{1em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.9em}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.5em}
+\titlespacing*{\subsubsection}{0pt}{1em}{0.3em}
+
+% --- Lists -------------------------------------------------------------------
+\setlist[itemize]{%
+  label=\textcolor{brandAccent}{\textbullet},
+  leftmargin=1.5em, itemsep=0.2em, topsep=0.4em}
+\setlist[enumerate]{%
+  label=\textcolor{brandAccent}{\arabic*.},
+  leftmargin=1.8em, itemsep=0.2em, topsep=0.4em}
+
+% --- Callout boxes -----------------------------------------------------------
+% Five generic box types. The names describe a role, not a brand, so keep them.
+
+% propbox: soft accent tint. Proposed programs, engagement models, key points.
+\newtcolorbox{propbox}[1][]{
+  enhanced, breakable,
+  colback=brandAccent!7, colframe=brandAccent!28,
+  boxrule=0.5pt, arc=5pt,
+  boxsep=0.5em, left=1.2em, right=1em, top=0.9em, bottom=0.9em,
+  coltext=brandInk, #1
+}
+
+% conceptbox: warm light card. Explanations, definitions, reference lists.
+\newtcolorbox{conceptbox}[1][]{
+  enhanced, breakable,
+  colback=brandLightCard, colframe=brandLightBorder,
+  boxrule=0.4pt, arc=5pt,
+  boxsep=0.5em, left=1.2em, right=1em, top=0.9em, bottom=0.9em,
+  coltext=brandInk, #1
+}
+
+% insightbox: left accent rule, italic. Principles, observations, convictions.
+\newtcolorbox{insightbox}[1][]{
+  enhanced, breakable,
+  colback=brandLightBg, colframe=brandAccent,
+  leftrule=3pt, toprule=0pt, rightrule=0pt, bottomrule=0pt,
+  arc=0pt, sharp corners,
+  boxsep=0.3em, left=1.2em, right=0.8em, top=0.6em, bottom=0.6em,
+  coltext=brandInk!80, fontupper=\itshape, #1
+}
+
+% riskbox: soft accent border. Risks, cautions, constraints, warnings.
+\newtcolorbox{riskbox}[1][]{
+  enhanced, breakable,
+  colback=brandAccent!5, colframe=brandAccent!45,
+  leftrule=3pt, toprule=0.4pt, rightrule=0.4pt, bottomrule=0.4pt,
+  arc=4pt,
+  boxsep=0.4em, left=1.2em, right=1em, top=0.8em, bottom=0.8em,
+  coltext=brandInk, #1
+}
+
+% teambox: light card with left accent. Team profiles, people descriptions.
+\newtcolorbox{teambox}[1][]{
+  enhanced, breakable,
+  colback=brandLightCard, colframe=brandAccent,
+  leftrule=3pt, toprule=0pt, rightrule=0pt, bottomrule=0pt,
+  arc=0pt, sharp corners,
+  boxsep=0.4em, left=1.2em, right=1em, top=0.7em, bottom=0.7em,
+  coltext=brandInk, #1
+}
+
+% --- Bold text in the accent colour (brand style) ----------------------------
+\let\brandbfOrig\textbf
+\renewcommand{\textbf}[1]{{\brandbfOrig{\color{brandAccent}#1}}}
+
+% --- Logo resolution ---------------------------------------------------------
+% Resolve each logo to its file if present, otherwise to an empty macro. The
+% cover, closing page and header test these and fall back to a text wordmark
+% when the file is absent, so the template compiles before assets are added.
+\newcommand{\brandHeaderLogoBox}{%
+  \IfFileExists{\brandLogo}{%
+    \raisebox{-0.75cm}[0pt][0pt]{\includegraphics[height=1.8cm]{\brandLogo}}%
+  }{}%
+}
+\newcommand{\brandCoverLogo}[1]{%
+  \IfFileExists{\brandLogoInverted}{%
+    \includegraphics[width=0.6875\textwidth]{\brandLogoInverted}%
+  }{%
+    {\fontsize{30}{36}\selectfont\bfseries\color{brandCream}#1}%
+  }%
+}
+
+% --- Header / footer (logo or nothing in the top margin) ---------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[R]{\brandHeaderLogoBox}
+\fancyfoot[L]{%
+  \footnotesize\color{brandSilver}%
+  \brandOrgName%
+  \ \ \textbullet\ \ %
+  \brandFooterTagline%
+}
+\fancyfoot[R]{\footnotesize\color{brandSilver}\thepage}
+
+% Default footer tagline. The .qmd overrides this per document.
+\providecommand{\brandFooterTagline}{\brandWebsite}
+
+% --- Suppress Quarto's auto title block --------------------------------------
+\renewcommand{\maketitle}{}
+
+% --- Cover page command ------------------------------------------------------
+% \brandcover{Label}{Title}{Recipient}{Date}
+\newcommand{\brandcover}[4]{%
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \AddToShipoutPictureBG*{%
+      \color{brandDark}\AtPageLowerLeft{\rule{\paperwidth}{\paperheight}}%
+    }%
+    \AddToShipoutPictureBG*{%
+      \color{brandAccent}\AtPageUpperLeft{\rule{\paperwidth}{4pt}}%
+    }%
+    \begingroup
+      \color{brandCream}%
+      \vspace*{1.8cm}
+      \begin{center}
+        \brandCoverLogo{\brandOrgName}\\[2.0cm]
+        {\color{brandAccent}\rule{0.4\textwidth}{0.8pt}}\\[1.6cm]
+        {\large\color{brandAccent}\MakeUppercase{#1}}\\[1.2em]
+        {\fontsize{28}{40}\selectfont\bfseries\color{brandCream} #2}\\[1.4em]
+        {\Large\color{brandSilver} #3}\\[2.5em]
+        {\normalsize\color{brandAccent}\MakeUppercase{#4}}
+      \end{center}
+      \vfill
+      \begin{center}
+        {\color{brandAccent}\rule{0.4\textwidth}{0.8pt}}\\[1.0em]
+        {\footnotesize\color{brandSilver}
+          \brandCoverFooterName%
+          \ \textbullet\ %
+          \brandOrgName}\\[0.5em]
+        {\footnotesize\color{brandSilver} \brandWebsite}\\[1.2em]
+        {\scriptsize\color{brandSilver!70} \brandIPNotice}
+      \end{center}
+    \endgroup
+  \end{titlepage}
+  \setcounter{page}{1}
+}
+
+% Default cover footer name. The .qmd overrides this per document.
+\providecommand{\brandCoverFooterName}{\brandOrgName}
+
+% --- Closing page command ----------------------------------------------------
+% \brandclose{Close line 1}{Close line 2}
+\newcommand{\brandclose}[2]{%
+  \clearpage
+  \thispagestyle{empty}
+  \AddToShipoutPictureBG*{%
+    \color{brandDark}\AtPageLowerLeft{\rule{\paperwidth}{\paperheight}}%
+  }%
+  \begingroup
+    \color{brandCream}%
+    \vspace*{2.8cm}
+    \begin{center}
+      \brandCoverLogo{\brandOrgName}\\[2.2cm]
+      {\fontsize{24}{30}\selectfont\bfseries\color{brandAccent}
+        \brandOrgName}\\[0.6em]
+      {\small\color{brandSilver} \brandStrapline}\\[1.8em]
+      {\Large\color{brandCream} #1}\\[1.8em]
+      {\large\color{brandAccent} #2}\\[3em]
+      {\scriptsize\color{brandSilver!70} \brandIPNotice}
+    \end{center}
+    \vfill
+  \endgroup
+}
+
+% --- Part divider command ----------------------------------------------------
+% \gmsectiondivider{Part label}{Part title}
+\newcommand{\gmsectiondivider}[2]{%
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
+    \vspace*{\fill}
+    {\fontsize{34}{40}\selectfont\bfseries\color{brandAccent} #1}\\[0.8em]
+    {\Large\color{brandInk!55} #2}
+    \vspace*{\fill}
+  \end{center}
+  \clearpage
+}
+
+\endinput

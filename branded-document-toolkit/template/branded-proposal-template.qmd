@@ -1,0 +1,62 @@
+---
+title: "__TITLE__"
+subtitle: "__SUBTITLE__"
+date: "__DATE__"
+format:
+  pdf:
+    documentclass: article
+    classoption:
+      - 11pt
+      - a4paper
+    pdf-engine: xelatex
+    geometry:
+      - margin=2.5cm
+      - top=3.5cm
+      - bottom=2.6cm
+      - headheight=2.0cm
+      - headsep=0.8cm
+    mainfont: "Helvetica Neue"
+    mainfontoptions:
+      - Ligatures=TeX
+    monofont: "Menlo"
+    monofontoptions:
+      - Scale=0.92
+    number-sections: true
+    toc: true
+    toc-depth: 2
+    colorlinks: true
+    keep-tex: false
+    include-in-header:
+      # All brand mechanics live in brand.sty: the accent colour, the callout
+      # boxes, the section divider, the cover and closing pages, the header and
+      # footer and the mandatory titlesec fix. Edit brand.sty to rebrand.
+      - file: brand.sty
+      - text: |
+          % --- Per-document wiring -------------------------------------
+          % The graphicspath points at the folder holding the logo files.
+          % Set the correct number of ../ segments from this .qmd to that
+          % folder. A wrong depth makes the logo fail to load.
+          \graphicspath{{__GRAPHICSPATH__}{images/}}
+
+          % Footer tagline shown on every content page (under 60 chars).
+          \renewcommand{\brandFooterTagline}{__FOOTER_TAGLINE__}
+
+          % Name shown in the cover footer line.
+          \renewcommand{\brandCoverFooterName}{__COVER_FOOTER_NAME__}
+
+    include-before-body:
+      text: |
+        \brandcover
+          {__COVER_LABEL__}
+          {__COVER_TITLE__}
+          {__COVER_RECIPIENT__}
+          {__COVER_DATE__}
+
+    include-after-body:
+      text: |
+        \brandclose
+          {__CLOSE_LINE_1__}
+          {__CLOSE_LINE_2__}
+---
+
+__BODY__
