@@ -1,5 +1,9 @@
 # deep-research
 
+[![Tested with NVIDIA SkillSpector](https://img.shields.io/badge/Tested%20with-NVIDIA%20SkillSpector-76B900?logo=nvidia&logoColor=white)](https://github.com/NVIDIA/SkillSpector)
+
+> **Security:** This skill was scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector), a security scanner for AI agent skills. The skill contains no executable code. Every pattern the scanner flagged was reviewed manually and assessed as a false positive against the skill's documentation and templates. For your own safety, read the skill source and re-scan it before installing if you have any doubt. The full scan report sits in this folder as `skillspector-report.md`.
+
 A skill that runs comprehensive research as a delegated task rather than as inline web searches, so the main conversation stays clear while a specialist agent does the digging. It hands a self-contained research brief to a `deep-research-agent` subagent, which plans the investigation, searches and cross-checks sources, then returns a structured report with citations and confidence levels. For a question with several independent facets, the skill dispatches several agents in parallel and synthesises their results.
 
 ## What it does

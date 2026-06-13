@@ -82,7 +82,9 @@ owner, stop and tell the user rather than publishing someone else's work under t
    one-paragraph summary, a short "what it does" section, installation, usage, rationale, an
    extension guide, the repository layout, the licence and a one-line credit. The four sections the
    user always wants are installation, usage, rationale and the extension guide, so never ship
-   without all four. See the README requirements below.
+   without all four. Immediately after the title the README must carry the SkillSpector security
+   header, which is the badge plus the safety note set out in the README requirements below. See the
+   README requirements below for both.
 
 7. **Add a licence.** Write an MIT `LICENSE` with `Copyright (c) <year> <your author name>`, unless
    the source skill already carries a different licence, in which case keep that one and credit the
@@ -116,15 +118,41 @@ owner, stop and tell the user rather than publishing someone else's work under t
    reader can still see what a run produces. Fix any build failure in the bundled files before
    publishing.
 
-10. **Publish to GitHub.** Clone your skills repository into a temporary directory, copy the staged
+10. **Scan with SkillSpector.** Install
+    [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector) once, then scan the staged package
+    and save the report inside it:
+    `skillspector scan "<staging folder>/<skillname>/" --format markdown --output "<staging folder>/<skillname>/skillspector-report.md"`.
+    Read the report. The scanner over-flags documentation skills, so a HIGH or CRITICAL line is not
+    proof of a problem. Open every flagged location in the source and judge each one. Proceed only
+    when the recommendation is SAFE, or when every flagged item has been reviewed and judged a false
+    positive against the skill's documentation, templates or licence, with that judgement recorded in
+    your report. If a finding is real, fix it in the staged package before publishing. Keep the
+    `skillspector-report.md` inside the package, then place the SkillSpector security header at the
+    top of the README as set out in step 6 and the README requirements.
+
+11. **Publish to GitHub.** Clone your skills repository into a temporary directory, copy the staged
     `<skillname>/` folder into the clone as `<skillname>/`, commit with a clear message, push to the
     default branch, then remove the temporary clone. Pushing is irreversible and outward facing, so
     confirm the source is the user's own work before this step.
 
-11. **Report.** Give the staged path, the published folder URL inside the repository, a note of what
-    was genericised, the result of the writing-gate checks and the result of the example build.
+12. **Report.** Give the staged path, the published folder URL inside the repository, a note of what
+    was genericised, the result of the writing-gate checks, the SkillSpector score with the verdict
+    on any flagged items and the result of the example build.
 
 ## README requirements
+
+Open the README with the SkillSpector security header. Directly under the title, before the summary
+paragraph, place the badge and then the safety note. The badge is:
+
+```
+[![Tested with NVIDIA SkillSpector](https://img.shields.io/badge/Tested%20with-NVIDIA%20SkillSpector-76B900?logo=nvidia&logoColor=white)](https://github.com/NVIDIA/SkillSpector)
+```
+
+The safety note is a block quote. It states that the skill was scanned with NVIDIA SkillSpector. It
+states that the skill ships no executable code where that holds. It states that any flagged patterns
+were reviewed and judged false positives. It tells the reader to read the source and re-scan before
+installing if in doubt. The note names `skillspector-report.md` as the bundled report. Write the
+note in the author's voice and keep it within the writing gate in step 8.
 
 Write the installation section for every platform the skill can run on, in short paragraphs rather
 than a wall of bullets. Cover Claude Code (copy the folder into `~/.claude/skills/<skillname>/` for

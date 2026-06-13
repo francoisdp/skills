@@ -1,5 +1,9 @@
 # anti-ai-writing
 
+[![Tested with NVIDIA SkillSpector](https://img.shields.io/badge/Tested%20with-NVIDIA%20SkillSpector-76B900?logo=nvidia&logoColor=white)](https://github.com/NVIDIA/SkillSpector)
+
+> **Security:** This skill was scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector), a security scanner for AI agent skills. The skill contains no executable code. Every pattern the scanner flagged was reviewed manually and assessed as a false positive against the skill's documentation and templates. For your own safety, read the skill source and re-scan it before installing if you have any doubt. The full scan report sits in this folder as `skillspector-report.md`.
+
 A set of writing-quality rules that strip the patterns which mark text as machine-generated, applied passively to every output and as an active review pass on request. The skill shapes generation from the first word so that the prose reads as something a person wrote, so that when you ask for it explicitly the same rules run as an audit that finds violations in an existing draft and rewrites them. The rules cover hedging, inflated significance, formulaic transitions, copula avoidance, structural monotony and a catalogue of vocabulary and punctuation tells, each one a statistical fingerprint of generated text that the rules are built to remove.
 
 ## What it does

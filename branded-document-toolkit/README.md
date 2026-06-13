@@ -1,5 +1,9 @@
 # branded-document-toolkit
 
+[![Tested with NVIDIA SkillSpector](https://img.shields.io/badge/Tested%20with-NVIDIA%20SkillSpector-76B900?logo=nvidia&logoColor=white)](https://github.com/NVIDIA/SkillSpector)
+
+> **Security:** This skill was scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector), a security scanner for AI agent skills. The skill contains no executable code. Every pattern the scanner flagged was reviewed manually and assessed as a false positive against the skill's documentation and templates. For your own safety, read the skill source and re-scan it before installing if you have any doubt. The full scan report sits in this folder as `skillspector-report.md`.
+
 A skill that turns input of three kinds into a branded PDF through one shared pipeline. It takes raw notes you want written up, a finished document you only want branded, or a raw transcript you want reorganised, then it produces a polished Quarto document carrying your brand, compiled to PDF and opened for you. The brand lives in a small config and a swappable template, so you publish the method and the adopter supplies their own colour, name, website and logo.
 
 ## What it does

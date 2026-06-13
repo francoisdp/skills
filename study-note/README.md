@@ -1,5 +1,9 @@
 # study-note
 
+[![Tested with NVIDIA SkillSpector](https://img.shields.io/badge/Tested%20with-NVIDIA%20SkillSpector-76B900?logo=nvidia&logoColor=white)](https://github.com/NVIDIA/SkillSpector)
+
+> **Security:** This skill was scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector), a security scanner for AI agent skills. The skill contains no executable code. Every pattern the scanner flagged was reviewed manually and assessed as a false positive against the skill's documentation and templates. For your own safety, read the skill source and re-scan it before installing if you have any doubt. The full scan report sits in this folder as `skillspector-report.md`.
+
 A skill that processes a Markdown, text or Quarto file into a single standardised study-note format, then places it where it belongs and links it to related notes. It takes a file path, pasted text or a bare topic, extracts or asks for the metadata, converts the body into a consistent structure of summary, detail, sources and connections, then writes the note and suggests wiki-links to related material already in your collection.
 
 ## What it does
